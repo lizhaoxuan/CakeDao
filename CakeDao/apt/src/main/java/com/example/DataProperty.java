@@ -6,12 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 用来获取修饰该注解的类信息
- * Created by lizhaoxuan on 16/5/21.
+ * 表名需要本地持久化的类成员。
+ * 仅支持boolean byteArray byte double float long int
+ * 及Date类型。
+ * Created by lizhaoxuan on 16/5/29.
  */
 @Retention(RetentionPolicy.CLASS)
-@Target({ElementType.TYPE,ElementType.METHOD})
-public @interface GetMsg {
-    int id();
-    String name() default "default";
+@Target(ElementType.FIELD)
+public @interface DataProperty {
+
 }
