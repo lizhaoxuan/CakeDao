@@ -32,7 +32,7 @@ CakeDao使用APT技术实现，**编译时注解 + 代码生成**。既有GreenD
 Install with gradle
 
     dependencies {
-        compile 'com.github.zhaoxuan:cake-dao:0.0.1'
+        compile 'com.github.zhaoxuan:cake-dao:0.1'
     }
 
 
