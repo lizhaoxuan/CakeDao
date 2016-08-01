@@ -8,6 +8,11 @@ import java.util.Map;
  */
 public class ConversionType {
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     private static Map<String, String> dbType = new LinkedHashMap<>();
 
     static {

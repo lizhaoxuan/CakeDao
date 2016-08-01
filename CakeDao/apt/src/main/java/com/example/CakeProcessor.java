@@ -122,14 +122,14 @@ public class CakeProcessor extends AbstractProcessor {
     /**
      * 获得类成员基础信息
      */
-    private PropertyInfo getPropertyInfo(Element element, boolean isPrimary) {
+    private AttributeInfo getPropertyInfo(Element element, boolean isPrimary) {
         VariableElement variableElement = (VariableElement) element;
         String variableName = variableElement.getSimpleName().toString();
         TypeMirror typeMirror = variableElement.asType();
 
-        PropertyInfo propertyInfo = null;
+        AttributeInfo propertyInfo = null;
         try {
-            propertyInfo = new PropertyInfo(variableName, typeMirror.toString(), isPrimary);
+            propertyInfo = new AttributeInfo(variableName, typeMirror.toString(), isPrimary);
         } catch (CakeDaoException e) {
             error(element,
                     "The use of irregular %s: %s",

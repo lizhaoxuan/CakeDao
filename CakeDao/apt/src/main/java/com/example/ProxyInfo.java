@@ -18,8 +18,8 @@ public class ProxyInfo {
     private String proxyClassName;
 
     private TypeElement typeElement;
-    private PropertyInfo idProperty;
-    private List<PropertyInfo> propertyInfos;
+    private AttributeInfo idProperty;
+    private List<AttributeInfo> propertyInfos;
 
     public static final String PROXY = "CAKEDAO";
 
@@ -54,14 +54,14 @@ public class ProxyInfo {
         return typeElement;
     }
 
-    void addPropertyInfos(PropertyInfo info) {
+    void addPropertyInfos(AttributeInfo info) {
         if (propertyInfos == null) {
             propertyInfos = new ArrayList<>();
         }
         propertyInfos.add(info);
     }
 
-    void setIdProperty(PropertyInfo info) {
+    void setIdProperty(AttributeInfo info) {
         idProperty = info;
     }
 
@@ -116,14 +116,14 @@ public class ProxyInfo {
     private void generateCreateTableCode(StringBuilder builder) {
         builder.append("public String createTable(boolean ifNotExists) { \n")
                 .append("String constraint = ifNotExists ? \"IF NOT EXISTS \" : \"\";\n")
-                .append("String sql = \"CREATE TABLE \" + constraint +  \"\\\"")
+                .append("String sql = \"CREATE TABLE \" + constraint +  \"")
                 .append(getTableName())
-                .append("\\\" (\" + \n")
-                .append("\"\\\"CAKEDAO_ID\\\" INTEGER PRIMARY KEY AUTOINCREMENT");
-        for (PropertyInfo info : propertyInfos) {
-            builder.append(",    \\\"")
+                .append(" (\" + \n")
+                .append("\"CAKEDAO_ID INTEGER PRIMARY KEY AUTOINCREMENT");
+        for (AttributeInfo info : propertyInfos) {
+            builder.append(",    ")
                     .append(info.getNameByDB())
-                    .append("\\\" ")
+                    .append(" ")
                     .append(info.getTypeByDB());
         }
         builder.append(");\"; \n");
@@ -132,9 +132,9 @@ public class ProxyInfo {
 
     private void generateDropTable(StringBuilder builder) {
         builder.append("public String dropTable(boolean ifExists) { \n")
-                .append("String sql = \"DROP TABLE \" + (ifExists ? \"IF EXISTS \" : \"\") + \"\\\"")
+                .append("String sql = \"DROP TABLE \" + (ifExists ? \"IF EXISTS \" : \"\") + \"")
                 .append(getTableName())
-                .append("\\\"\";\n")
+                .append("\";\n")
                 .append("return sql; \n")
                 .append("} \n");
     }
@@ -198,7 +198,7 @@ public class ProxyInfo {
                 .append("String sql = \"INSERT INTO ")
                 .append(getTableName())
                 .append("(");
-        for (PropertyInfo info : propertyInfos) {
+        for (AttributeInfo info : propertyInfos) {
             builder.append(info.getNameByDB())
                     .append(",");
         }
@@ -212,7 +212,7 @@ public class ProxyInfo {
         builder.append("SQLiteStatement statement=db.compileStatement(sql);");
         for (int i = 1, l = propertyInfos.size(); i <= l; i++) {
             builder.append("statement.")
-                    .append(propertyInfos.get(i - 1).getSqlPutByType(i));
+                    .append(propertyInfos.get(i - 1).getSqlBind(i));
         }
 
         builder.append("return statement.executeInsert();\n }\n");
@@ -224,11 +224,11 @@ public class ProxyInfo {
                 .append(" value) { \n")
                 .append("ContentValues contentValues = new ContentValues();\n");
 
-        for (PropertyInfo info : propertyInfos) {
+        for (AttributeInfo info : propertyInfos) {
             builder.append("contentValues.put(\"")
                     .append(info.getNameByDB())
                     .append("\",")
-                    .append(info.getSqlPutByType());
+                    .append(info.getSqlPut());
         }
         builder.append("return db.update(\"")
                 .append(getTableName())
@@ -240,11 +240,11 @@ public class ProxyInfo {
                 .append(getTargetClassName())
                 .append(" value) { \n")
                 .append("ContentValues contentValues = new ContentValues();\n");
-        for (PropertyInfo info : propertyInfos) {
+        for (AttributeInfo info : propertyInfos) {
             builder.append("contentValues.put(\"")
                     .append(info.getNameByDB())
                     .append("\",")
-                    .append(info.getSqlPutByType());
+                    .append(info.getSqlPut());
         }
         builder.append("return db.update(\"")
                 .append(getTableName())
@@ -266,10 +266,10 @@ public class ProxyInfo {
                 .append("values[i] = new ").append(getTargetClassName()).append("();\n");
         builder.append("values[i].").append(idProperty.getName())
                 .append("= cursor.getInt(cursor.getColumnIndex(\"CAKEDAO_ID\"));");
-        for (PropertyInfo info : propertyInfos) {
+        for (AttributeInfo info : propertyInfos) {
             builder.append("values[i].").append(info.getName())
                     .append("= ")
-                    .append(info.getSqlGetByType());
+                    .append(info.getSqlGet());
         }
         builder.append("cursor.moveToNext();\n }")
                 .append("cursor.close(); \n")
