@@ -12,6 +12,8 @@ public class Student {
     public long id;
     @DataProperty
     public String name;
+    @DataProperty
+    public String className;
 
     public Student() {
     }
