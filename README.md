@@ -1,7 +1,7 @@
 # CakeDao
 Android ORM数据库框架
 
-###1.概述
+### 1.概述
 
 采用一个ORM数据库框架来进行数据持久化操作几乎是现在所有APP的选择。那么最受欢迎的的ORM数据库框架有哪些呢？
 
@@ -23,11 +23,11 @@ GreenDao、OrmLite、Active Android 等等等等~
 有的，就是我们今天介绍的CakeDao。
 
 
-###2.使用
+### 2.使用
 
 CakeDao使用APT技术实现，**编译时注解 + 代码生成**。既有GreenDao的高效率，又有OrmLite的方便使用。看一下使用方式，超级简单，你一定会爱上它的。
 
-#####依赖
+##### 依赖
 
 Install with gradle
 
@@ -36,7 +36,7 @@ Install with gradle
     }
 
 
-#####修饰实体类
+##### 修饰实体类
 
 在你要做数据持久化的实体类修饰CakeDao的注解。
 
@@ -68,7 +68,7 @@ CakeDao支持的类型有：String,int,boolean,byte[],byte,java.util.Date,double
 	}
 
 
-#####初始化CakeDao
+##### 初始化CakeDao
 
 Context建议使用ApplicationContext。
 
@@ -85,7 +85,7 @@ init方法有两个重载：
 	
 	
 	
-#####使用
+##### 使用
 
 CakeDao有两种操作数据库的方法：
 
@@ -143,12 +143,10 @@ CakeDao有两种操作数据库的方法：
 **是不是超级简单！！！**
 
 
-###3.半成品CakeDao
+### 3.半成品CakeDao
 
 因为时间关系，当前版本的CakeDao是一个半成品，只有最基础的增删改查功能。不建议直接使用。
 
 还有很多改进的地方，比如：增加事务、更完善的错误验证、效率优化、多样化的查询功能等等。
-
-立个flag:预计7.1号可以完成。
 
 
